@@ -19,10 +19,11 @@ def collide(line, point):
 
 	l.v += lb/l.m
 	p.v -= lb/p.m
+	l.om += lb/l.steiner(l.r) * np.cross(l.r, l.w())
 
 	l.r += l.v * t
 	p.r += p.v * t
-	l.rotate(t * l.om)
+	l.rotate(t * l.om[2])
 	return l, p
 
 
@@ -39,23 +40,6 @@ def switch_to_masspoint(p, l):
 
 	print('Momentum:', p.v * p.m + l.v * l.m)
 	print('Masspoint:', p.r * p.m + l.r * l.m)
-
-
-def init_angle(bill, ring, fi=0, velocity=1.):
-	# works properly in max range only with ring.pos=[0 0]
-	y = ring.r * (1. - math.cos(2 * fi)) * 0.5
-	x = - ring.r * math.sin(2 * fi) * 0.5
-	# in coordinates according to ring's center
-
-	bill.pos = np.array([x, y]) + ring.pos
-	bill.v = np.array([math.sin(fi) * velocity, math.cos(fi) * velocity])
-
-	if np.linalg.norm(ring.pos - bill.pos) > ring.r - bill.r:
-		print('Warning: Angle over limit!', fi)
-		return 1
-
-	return 0
-
 
 def summary_momentum(bill, ring):
 	return bill.v * bill.m + ring.v * ring.m
