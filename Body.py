@@ -15,13 +15,16 @@ class Line:
 		self.new_pos = None		# should be defined as np.array's
 		self.new_v = None
 
-		def w():
+		def w(self):
 			return np.matrix([[0, -1], [1, 0]]) * self.n
 
-		def rotate(angle):
+		def rotate(self, angle):
 			r = np.matrix([[cos(angle), -sin(angle)],
 			               [sin(angle), cos(angle)]])
 			self.n = np.dot(r * self.n)
+
+		def steiner(self, length):
+			return self.I + self.m * length ** 2
 
 class Point:
 	def __init__(self, mass, position=[0.0, 0.0], velocity=[0.0, 0.0], time=0.0):

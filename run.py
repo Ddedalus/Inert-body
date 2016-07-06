@@ -5,32 +5,29 @@ from Body import *
 import copy
 
 it = 20
-bill_0 = Body(1., 0., [0., 0.], [1., 1.])
-ring_0 = Body(2., 1.5, [0., 0.], [0., 0.])
+point_0 = Point(1., [0., 0.], [1., 1.])
+line_0 = Line(4., 4, [0., 0.], angular_vel=0)
 
-init_angle(bill_0, ring_0, math.pi / 5.0)
-plot_bodies(bill_0, ring_0, 'Initial position')
+# init_angle(point_0, line_0, math.pi / 5.0)
+# plot_bodies(point_0, line_0, 'Initial position')
 
-bill_i, ring_i = copy.copy(bill_0), copy.copy(ring_0)
-switch_to_masspoint(bill_i, ring_i)
+point, line = copy.copy(point_0), copy.copy(line_0)
+switch_to_masspoint(point, line)
 
 
-bill_r, ring_r = copy.copy(bill_0), copy.copy(ring_0)
-# switch_to_masspoint(bill_r, ring_r) # - causes crash
-ring_r.v = np.array([0., 0.])
+# point_r, line_r = copy.copy(point_0), copy.copy(line_0)
+# switch_to_masspoint(point_r, line_r) # - causes crash
 
-pos_rigid = [bill_r.pos]
-pos_inertial = [bill_i.pos]
+data_line = [line_0]
+data_point = [point_0]
 
 for i in range(it):
-	bill_r, ring_r = collide_rigid(bill_r, ring_r)
-	bill_i, ring_i = collide_inertial(bill_i, ring_i)
-	pos_rigid.append(list(bill_r.pos))
-	pos_inertial.append(bill_i.pos)
+	point, line = collide(point, line)
+	data_line.append(line)
 
 Plotter.live = False
 
-plot_bodies(bill_0, ring_0, 'Initial position')
+plot_bodies(point_0, line_0, 'Initial position')
 plot_single_path(pos_inertial, 'Inertial path')
 plot_single_path(pos_rigid, 'Rigid path')
 plot_compare_paths(pos_rigid, pos_inertial)
