@@ -10,11 +10,12 @@ def collide(line, point):
 	l = copy.copy(line)
 	p = copy.copy(point)
 
-	a = np.dot(l.n, l.r) /( norm(l.n) * norm(l.r) )
-	t = math.acos(a)
+	a = np.dot(l.n, l.r) /(norm(l.n) * norm(l.r))
+	angle = math.acos(a)
+	t = angle/l.om[2]
 	#check it!
 
-	print(l.w())
+	# print(l.w())
 	lb = 2 * l.m * p.m * l.st(norm(l.r)) * \
 	     (l.v - p.v) \
 	     / ((l.m + p.m) * l.st(norm(l.r)) + l.m * p.m * np.dot(np.cross(l.r, l.w()),
@@ -22,7 +23,7 @@ def collide(line, point):
 
 	l.v += lb/l.m
 	p.v -= lb/p.m
-	l.om += lb/l.steiner(l.r) * np.cross(l.r, l.w())
+	l.om += lb/l.st(l.r) * np.cross(l.r, l.w())
 
 	l.r += l.v * t
 	p.r += p.v * t

@@ -19,12 +19,15 @@ class Line:
 		self.new_v = None
 
 	def w(self):
-		return self.n[:2] * np.matrix([[0, 1], [-1, 0]])
+		a = np.cross(self.n[:2], np.array([[0, 1], [-1, 0]]))
+		# print('a: ', a, np.shape(a), type(a))
+		return np.array([a[0], a[1], 0.])
 
 	def rotate(self, angle):
-		r = np.matrix([[cos(angle), -sin(angle)],
-		               [sin(angle), cos(angle)]])
-		self.n = np.dot(r * self.n)
+		r = np.array([[float(cos(angle)), -sin(angle)],
+		               [float(sin(angle)), cos(angle)]])
+		n = np.dot(self.n[:2], r)
+		self.n = np.array([n[0], n[1], 0.])
 
 	def st(self, length):
 		return self.I + self.m * length ** 2
