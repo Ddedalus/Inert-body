@@ -10,12 +10,15 @@ def collide(line, point):
 	l = copy.copy(line)
 	p = copy.copy(point)
 
-	t = math.arccos(np.dot(l.n, l.r)/norm(l.n) * norm(l.r))
+	a = np.dot(l.n, l.r) /( norm(l.n) * norm(l.r) )
+	t = math.acos(a)
 	#check it!
 
-	lb = 2 * l.m * p.m * l.steiner(norm(l.r)) * \
+	print(l.w())
+	lb = 2 * l.m * p.m * l.st(norm(l.r)) * \
 	     (l.v - p.v) \
-	     / ((l.m + p.m) * l.steiner(norm(l.r)) + l.m * p.m * np.cross(l.r, l.w()))
+	     / ((l.m + p.m) * l.st(norm(l.r)) + l.m * p.m * np.dot(np.cross(l.r, l.w()),
+	                                                           np.cross(l.r, l.w())))
 
 	l.v += lb/l.m
 	p.v -= lb/p.m

@@ -1,6 +1,6 @@
 import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib.patches import Circle
+from matplotlib.patches import Circle, Arrow
 
 
 # matplotlib.use('Agg')
@@ -22,12 +22,17 @@ def plot_bodies(l, p, title='Position'):
 	plt.title(title)
 	ax = fig.add_subplot(111)
 
-	ax.arrow(*l.r, 5, 5, head_width=0.15, head_length=0.3, fc='k', ec='k')
+	a1 = Arrow( *l.r[:2], 5*l.n[0], 5*l.n[1], color='r', capstyle='round', width=0.5,
+	            antialiased=True)
+	l1 = Circle((l.r[0], l.r[1]), radius=0.1, fill=True, color='r')
 	p1 = Circle((p.r[0], p.r[1]), radius=0.1, fill=True, color='g')
+	p2 = Circle((0, 0), radius=0.1, fill=True, color='b')
+	ax.add_patch(a1)
+	ax.add_patch(p1)
+	ax.add_patch(l1)
+	ax.add_patch(p2)
 
-
-	for p in [c1, c2, p1, p2]:
-		ax.add_patch(p)
+	#add plot of omega!
 
 	ax.autoscale_view()
 	if Plotter.live is True:
@@ -39,7 +44,7 @@ def plot_bodies(l, p, title='Position'):
 
 def plot_single_path(pos_b, title=''):
 	fig = plt.figure()
-	plt.plot(*zip(*pos_b))
+	plt.plot(*zip(*pos_b)[:2])
 	plt.autoscale()
 	plt.axis('equal')
 	ax = fig.add_subplot(111)
@@ -56,35 +61,6 @@ def plot_single_path(pos_b, title=''):
 		plt.savefig('plot/path single ' + title.lower() + '.png')
 
 	plt.close()
-
-
-def plot_compare_paths(pos_rigid, pos_inertial):
-
-	fig, ax = plt.subplots(1)
-
-	plt.plot(*zip(*pos_rigid), color='r', label='rigid', alpha=0.8)
-	plt.plot(*zip(*pos_inertial), color='g', label='inertial', alpha=0.8)
-	ax.legend(loc='upper right')
-
-	p1 = Circle(pos_rigid[0], radius=ax.get_ylim()[0] / 50., fill=True, color='r', alpha=0.8)
-	p2 = Circle(pos_inertial[0], radius=ax.get_ylim()[0] / 50., fill=True, color='g', alpha=0.8)
-
-	for p in [p1, p2]:
-		ax.add_patch(p)
-
-	plt.title("Both paths")
-	plt.axis('equal')
-	plt.xlabel('x')
-	plt.ylabel('y')
-	plt.autoscale()
-
-	if Plotter.live is True:
-		plt.show()
-	else:
-		plt.savefig('plot/path compare.png')
-
-	plt.close()
-
 
 def plot_vs_collision(data, title='Data'):
 	plt.title(title + ' vs collision number')

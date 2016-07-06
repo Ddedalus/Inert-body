@@ -18,21 +18,21 @@ class Line:
 		self.new_pos = None		# should be defined as np.array's
 		self.new_v = None
 
-		def w(self):
-			return np.matrix([[0, -1], [1, 0]]) * self.n
+	def w(self):
+		return self.n[:2] * np.matrix([[0, 1], [-1, 0]])
 
-		def rotate(self, angle):
-			r = np.matrix([[cos(angle), -sin(angle)],
-			               [sin(angle), cos(angle)]])
-			self.n = np.dot(r * self.n)
+	def rotate(self, angle):
+		r = np.matrix([[cos(angle), -sin(angle)],
+		               [sin(angle), cos(angle)]])
+		self.n = np.dot(r * self.n)
 
-		def steiner(self, length):
-			return self.I + self.m * length ** 2
+	def st(self, length):
+		return self.I + self.m * length ** 2
 
 
 class Point:
 	def __init__(self, mass, position=[0.0, 0.0], velocity=[0.0, 0.0], time=0.0):
 		self.m = mass
-		self.r = np.array([float(p) for p in position])
-		self.v = np.array([float(v) for v in velocity])
+		self.r = np.array([float(p) for p in position] + [0.])
+		self.v = np.array([float(v) for v in velocity] + [0.])
 		self.t = float(time)
