@@ -1,2 +1,2 @@
 # Inert-body
-Collider for inert line and mass point.
+Collider for an inert line and a mass point.
